@@ -1,0 +1,339 @@
+<!--更新日志 每次修改请更新更新日志
+当前版本：V1.0.0
+1.0.0更新日志:新建了index.html，作为联队作战枢纽的导航页面
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0c">
+<title>78D13联队官网 · 作战枢纽</title>
+<link rel="icon" href="icon.jpg">
+<style>
+  :root{
+    --red:#c8102e;
+    --red-bright:#ff2b3d;
+    --gold:#f5c542;
+    --black:#0a0a0c;
+    --white:#f2f2f2;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  body{
+    min-height:100vh;
+    padding:48px 20px 40px;
+    display:flex;
+    justify-content:center;
+    font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--white);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(200,16,46,.30), transparent 55%),
+      radial-gradient(circle at 50% 100%, rgba(200,16,46,.14), transparent 60%),
+      var(--black);
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* 背景战术网格 */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size:44px 44px;
+    pointer-events:none;
+    -webkit-mask-image:radial-gradient(circle at 50% 25%, #000 0%, transparent 75%);
+            mask-image:radial-gradient(circle at 50% 25%, #000 0%, transparent 75%);
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:780px;
+    text-align:center;
+  }
+
+  /* ============ 队徽 ============ */
+  .logo-stage{
+    position:relative;
+    width:190px; height:190px;
+    margin:0 auto 26px;
+    display:grid;
+    place-items:center;
+  }
+  .halo{
+    position:absolute; inset:-16px;
+    border-radius:50%;
+    background:conic-gradient(from 0deg,
+      rgba(245,197,66,.85),
+      rgba(200,16,46,.75),
+      rgba(245,197,66,.85));
+    filter:blur(24px);
+    opacity:.6;
+    animation:spin 9s linear infinite;
+    z-index:0;
+  }
+  .logo{
+    position:relative;
+    z-index:1;
+    width:100%; height:100%;
+    object-fit:contain;
+    border-radius:16px;
+    background:#000;
+    animation:glowPulse 3.2s ease-in-out infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @keyframes glowPulse{
+    0%,100%{
+      filter:drop-shadow(0 0 8px rgba(245,197,66,.55))
+             drop-shadow(0 0 26px rgba(200,16,46,.50));
+    }
+    50%{
+      filter:drop-shadow(0 0 20px rgba(245,197,66,.95))
+             drop-shadow(0 0 52px rgba(255,43,61,.85));
+    }
+  }
+
+  /* ============ 标题 ============ */
+  h1{
+    font-size:clamp(26px, 6vw, 42px);
+    letter-spacing:.14em;
+    text-indent:.14em;
+    font-weight:800;
+    color:#fff;
+    text-shadow:
+      0 0 14px rgba(255,43,61,.55),
+      0 0 40px rgba(200,16,46,.45);
+  }
+  .subtitle{
+    margin-top:12px;
+    font-size:clamp(11px, 2.4vw, 13px);
+    letter-spacing:.42em;
+    text-indent:.42em;
+    color:#9a9aa4;
+  }
+  .subtitle::before,
+  .subtitle::after{
+    content:"—";
+    margin:0 10px;
+    color:var(--red);
+  }
+
+  /* ============ 队训（金色） ============ */
+  .creed{
+    margin:34px auto 38px;
+    padding:22px 24px;
+    border:1px solid rgba(245,197,66,.38);
+    border-radius:12px;
+    background:linear-gradient(180deg, rgba(245,197,66,.08), rgba(0,0,0,0));
+  }
+  .creed-label{
+    display:inline-block;
+    margin-bottom:14px;
+    padding:3px 12px 3px 16px;
+    font-size:11px;
+    letter-spacing:.5em;
+    text-indent:.5em;
+    color:var(--gold);
+    border:1px solid rgba(245,197,66,.5);
+    border-radius:999px;
+  }
+  .creed-text{
+    font-size:clamp(15px, 2.7vw, 19px);
+    line-height:1.95;
+    font-weight:700;
+    color:var(--gold);
+    text-shadow:0 0 14px rgba(245,197,66,.35);
+  }
+
+  /* ============ 按钮区 ============ */
+  .buttons{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+    gap:14px;
+    margin-bottom:42px;
+  }
+  .btn{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:18px 20px;
+    border:1px solid rgba(200,16,46,.65);
+    border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(0,0,0,.35));
+    color:#fff;
+    font-size:16px;
+    font-weight:600;
+    text-decoration:none;
+    text-align:left;
+    overflow:hidden;
+    transition:transform .22s ease, border-color .22s ease,
+               box-shadow .22s ease, background .22s ease;
+  }
+  .btn::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:3px;
+    background:var(--red);
+    transition:width .22s ease, background .22s ease;
+  }
+  .btn:hover{
+    transform:translateY(-3px);
+    border-color:var(--gold);
+    background:linear-gradient(180deg, rgba(200,16,46,.24), rgba(0,0,0,.42));
+    box-shadow:0 10px 28px rgba(200,16,46,.38);
+  }
+  .btn:hover::before{
+    width:5px;
+    background:var(--gold);
+  }
+  .btn:active{ transform:translateY(-1px); }
+
+  .btn .idx{
+    font-family:ui-monospace, Consolas, monospace;
+    font-size:12px;
+    letter-spacing:.06em;
+    color:var(--red-bright);
+    transition:color .22s ease;
+  }
+  .btn:hover .idx{ color:var(--gold); }
+
+  .btn .label{ flex:1; }
+
+  .btn .arrow{
+    font-size:18px;
+    color:var(--red-bright);
+    transition:transform .22s ease, color .22s ease;
+  }
+  .btn:hover .arrow{
+    color:var(--gold);
+    transform:translateX(4px);
+  }
+
+  /* 占位按钮 */
+  .btn.soon{
+    border-style:dashed;
+    border-color:rgba(255,255,255,.18);
+    background:rgba(255,255,255,.02);
+    color:#83838d;
+    cursor:not-allowed;
+  }
+  .btn.soon::before{ background:rgba(255,255,255,.15); }
+  .btn.soon:hover{
+    transform:none;
+    border-color:rgba(255,255,255,.18);
+    background:rgba(255,255,255,.02);
+    box-shadow:none;
+  }
+  .btn.soon:hover::before{ width:3px; background:rgba(255,255,255,.15); }
+  .btn.soon .idx{ color:#5b5b63; }
+  .btn.soon:hover .idx{ color:#5b5b63; }
+
+  /* ============ 页脚小字 ============ */
+  footer{
+    padding-top:22px;
+    border-top:1px solid rgba(255,255,255,.08);
+    font-size:12.5px;
+    line-height:1.95;
+    color:#7b7b85;
+    letter-spacing:.02em;
+  }
+  footer .v-title{
+    color:#a98f36;
+    font-weight:600;
+  }
+
+  @media (max-width:520px){
+    body{ padding:32px 16px 30px; }
+    .logo-stage{ width:140px; height:140px; }
+    .btn{ padding:16px; font-size:15px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <main class="wrap">
+
+    <!-- ========== 队徽 ========== -->
+    <div class="logo-stage">
+      <div class="halo"></div>
+      <img class="logo" src="icon.jpg" alt="78D13联队队徽">
+    </div>
+
+    <!-- ========== 标题 ========== -->
+    <h1>78D13 联队官网</h1>
+    <p class="subtitle">联队作战枢纽 · 系统导航中心</p>
+
+    <!-- ========== 队训（金色） ========== -->
+    <section class="creed">
+      <p class="creed-label">队训</p>
+      <p class="creed-text">
+        绝对不要相信你的蓝名敌人，<br>
+        辩证性的相信你的绿名敌人，<br>
+        坚定信心相信你的红名敌人。
+      </p>
+    </section>
+
+    <!-- ========== 系统跳转按钮 ========== -->
+    <nav class="buttons">
+
+      <!-- 1. 联队文档中心 —— 把 href 换成你的实际地址 -->
+      <a class="btn" href="https://allenz523.github.io/inteammatch/">
+        <span class="idx">01</span>
+        <span class="label">联队文档中心</span>
+        <span class="arrow">→</span>
+      </a>
+
+      <!-- 2. 队内赛个人信息填报系统 -->
+      <a class="btn" href="https://xiaoyaojianxian556.github.io/78d13-Team-Competition-Personal-Information-Submission-System/">
+        <span class="idx">02</span>
+        <span class="label">队内赛个人信息填报系统</span>
+        <span class="arrow">→</span>
+      </a>
+
+      <!-- 3. 队长用评分系统 -->
+      <a class="btn" href="https://xiaoyaojianxian556.github.io/78d13-Team-Captain-used-Marking-System">
+        <span class="idx">03</span>
+        <span class="label">队长用评分系统</span>
+        <span class="arrow">→</span>
+      </a>
+
+      <!-- 4. 比赛裁判用总表生成系统 -->
+      <a class="btn" href="https://xiaoyaojianxian556.github.io/78D13-Team-Referee-Competition-Personnel-Information-Entry-System/">
+        <span class="idx">04</span>
+        <span class="label">比赛裁判用总表生成系统</span>
+        <span class="arrow">→</span>
+      </a>
+
+      <!-- 5. 占位：以后有新系统，复制上面任意一个 <a> 改掉 href 和文字即可 -->
+      <div class="btn soon">
+        <span class="idx">05</span>
+        <span class="label">更多系统正在开发中…</span>
+      </div>
+
+    </nav>
+
+    <!-- ========== 页脚 ========== -->
+    <footer>
+      <p>
+        <span class="v-title">骑士的八大美德：</span>
+        谦卑（打不过就跑）、诚实（莽夫打法从不变招）、怜悯（看到被打残的敌人就k头）、
+        英勇（和队友一起正义围殴）、公正（队友和敌人一起打）、牺牲（老是暴毙）、
+        荣誉（趁人不备偷袭）、灵魂（遵守以上打法绝不动摇）
+      </p>
+    </footer>
+
+  </main>
+
+</body>
+</html>
